@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Toc Toe With JS</title>\
+
+    <style>
+        body{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #484848;
+            overflow: hidden;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h1{
+            margin: 100px;
+        }
+        span{
+            color:rgb(181, 181, 0);
+            font-size: 25px;
+        }
+        .container{
+            width: 610px;
+            height: 610px;
+            background-color: #11a394;
+            border: 5px solid #ccc;
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+        .container>div{
+            width: 200px;
+            height: 200px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size:100px;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic Toc Toe <br>  <span>using JavaScript</span></h1>
+    <div class="container">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</body>
+<script>
+    const container = document.querySelector('.container')
+    const boxes = document.querySelectorAll('.container>div')
+    let player = 'O';
+
+    container.addEventListener('click',(e)=>{
+        if(e.target.textContent == ''){
+            e.target.textContent = player;
+  
+            if(win()){
+                setTimeout(() => {
+                    alert(`Player ${player} is won`)
+                    reset()
+                }, 0
+            );
+            }else if(drawGame()){
+                setTimeout(() => {
+                    alert('draw')
+                    reset()
+                }, 0);
+            }
+            player = player == 'X'? "O":"X"
+        }
+        // reset game
+        function reset(){
+            for (let i = 0; i < boxes.length; i++) {
+                boxes[i].textContent ='';   
+            }
+            player = 'O'
+        }
+    })
+
+    // function for winning
+    function win() {
+    let patterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],  // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],  // Columns
+        [0, 4, 8], [2, 4, 6]              // Diagonals
+    ];
+    for (let i = 0; i < patterns.length; i++) {
+        const [a, b, c] = patterns[i];
+        if (boxes[a].textContent && boxes[a].textContent == boxes[b].textContent && boxes[a].textContent == boxes[c].textContent) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+    // draw - checking if boxes are empty or not 
+    function drawGame(){
+        for (let i = 0; i < boxes.length; i++) {
+            if( boxes[i].textContent == ''){
+                return false;
+            }
+        }
+        return true;
+    }
+
+</script>
+</html>
