@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Toc Toe With JS</title>\
-
+    <title>Tic Toc Toe With JS</title>
     <style>
         body{
             width: 100vw;
@@ -41,6 +40,25 @@
             align-items: center;
             font-size:100px;
             color: #000;
+            position: relative;
+        }
+        .card{
+            position: absolute;
+            background-color: #fff;
+            color: #000;
+            font-size: 30px;
+            padding: 100px 200px;
+            border-radius: 20px;
+            display: none;
+            text-align: center;
+        }
+        .card >button{
+            font-size: 20px;
+            background-color:green;
+            border-radius: 10px;
+            color:#fff;
+            padding: 10px 20px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -57,6 +75,10 @@
         <div></div>
         <div></div>
     </div>
+    <div class="card">
+        <h2></h2>
+        <button>Continue</button>
+    </div>
 </body>
 <script>
     const container = document.querySelector('.container')
@@ -66,45 +88,66 @@
     container.addEventListener('click',(e)=>{
         if(e.target.textContent == ''){
             e.target.textContent = player;
-  
             if(win()){
-                setTimeout(() => {
-                    alert(`Player ${player} is won`)
-                    reset()
-                }, 0
-            );
+                // this is not working properly
+                // alert(`Player ${player} is won`)
+                winnerCard()
+                
             }else if(drawGame()){
                 setTimeout(() => {
-                    alert('draw')
-                    reset()
-                }, 0);
+                    card.style.display = "block";
+                    cardContent.textContent = "Its Draw!"
+                },500);
+                card.addEventListener("click",()=>{
+                        card.style.display = "none";
+                        reset();
+                })
+            }else{
+                player = player == 'X'? "O":"X"
             }
-            player = player == 'X'? "O":"X"
         }
-        // reset game
-        function reset(){
+       
+    })
+
+    // function for winning
+    function win() {
+        let patterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],  // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],  // Columns
+            [0, 4, 8], [2, 4, 6]              // Diagonals
+        ];
+        for (let i = 0; i < patterns.length; i++) {
+            const [a, b, c] = patterns[i];
+            if (boxes[a].textContent &&
+                boxes[a].textContent == boxes[b].textContent && 
+                boxes[a].textContent == boxes[c].textContent) {
+                return true;
+            }
+        }
+    }
+    
+
+    const card = document.querySelector('.card');
+    const cardContent = document.querySelector('.card>h2')
+    // Show wining card 
+    function winnerCard(){
+        setTimeout(() => {
+            card.style.display = "block";
+            cardContent.textContent = "Game Over!"
+        },500);
+        card.addEventListener("click",()=>{
+            card.style.display = "none";
+            reset();
+        })
+    }
+
+     // reset game
+     function reset(){
             for (let i = 0; i < boxes.length; i++) {
                 boxes[i].textContent ='';   
             }
             player = 'O'
         }
-    })
-
-    // function for winning
-    function win() {
-    let patterns = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8],  // Rows
-        [0, 3, 6], [1, 4, 7], [2, 5, 8],  // Columns
-        [0, 4, 8], [2, 4, 6]              // Diagonals
-    ];
-    for (let i = 0; i < patterns.length; i++) {
-        const [a, b, c] = patterns[i];
-        if (boxes[a].textContent && boxes[a].textContent == boxes[b].textContent && boxes[a].textContent == boxes[c].textContent) {
-            return true;
-        }
-    }
-    return false;
-}
 
 
     // draw - checking if boxes are empty or not 

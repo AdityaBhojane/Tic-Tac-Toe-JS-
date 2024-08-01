@@ -14,3 +14,6 @@
 - for rest all boxes also we can use simple loop to iterate and make its textContent empty 
 
 #### in this way we can make an tic tac toe game !
+
+## Update - 1.1 -
+- Game Over and for Draw Banner added with Reset button
